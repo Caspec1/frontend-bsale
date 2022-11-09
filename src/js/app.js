@@ -49,7 +49,7 @@ function createCartHTML() {
                             <td><p class="header__cart-product">${name}</p></td>
                             <td><p class="header__cart-price">${discount !== '' ? `$${parseInt(newPrice) * parseInt(quantity)}` : `$${parseInt(price) * parseInt(quantity)}`}</p></td>
                             <td>
-                                <select list=${id} id="quantity-select" onchange="updateQuantity(this)">
+                                <select onchange="updateQuantity(value, ${id})">
                                     ${options.map(o => `<option value=${o}>${o}</option>`)}
                                 </select>
                             </td>
@@ -71,6 +71,7 @@ function toggleCart() {
     const cartModal = document.querySelector('.header__cart-modal')
     cartModal.classList.toggle('header__cart-open')
     cartModal.classList.toggle('header__cart-hide')
+    cartModal.classList.toggle('header__cart-toggle')
 
     createCartHTML()
 }
@@ -115,22 +116,16 @@ function verification(prod) {
 
 }
 
-function updateQuantity(prod) {
-
-    const select = document.querySelector('#quantity-select').value
-    const id = prod.getAttribute('list')
-
-    if(cart.some(prod => prod.id === id)) {
-        const newQuantity = cart.map(prod => {
-            if(prod.id === id) {
-                prod.quantity = select
-            }
-            return prod
-        })
-        cart = newQuantity
-        localStorage.setItem('cart', JSON.stringify(cart))
-        createCartHTML()
-    } 
+function updateQuantity(q, id) {
+    const newQuantity = cart.map(prod => {
+        if(prod.id === id.toString()) {
+            prod.quantity = q
+        }
+        return prod
+    })
+    cart = newQuantity
+    localStorage.setItem('cart', JSON.stringify(cart))
+    createCartHTML()
 }
 
 function removeProduct(value) {

@@ -74,13 +74,41 @@ html {
     cursor: pointer;
 }
 .header__cart-modal {
-    display: block;
     position: absolute;
-    width: 45rem;
+    width: 100%;
     background-color: #fff;
-    right: 10rem;
-    top: 15rem;
     z-index: 999999;
+    height: calc(100vh - 10rem);
+    left: 100rem;
+    transition-property: left;
+    transition-duration: .3s;
+}
+@media (min-width: 768px) { 
+    .header__cart-modal {
+        display: block;
+        height: auto;
+        position: absolute;
+        width: 45rem;
+        background-color: #fff;
+        right: 10rem;
+        top: 15rem;
+        z-index: 999999;
+    }
+}
+.header__cart-toggle {
+    left: 0;
+}
+@media (min-width: 768px) { 
+    .header__cart-toggle {
+        left: 30%;
+        top: 15rem;
+    }
+}
+@media (min-width: 992px) { 
+    .header__cart-toggle {
+        left: 60%;
+        top: 15rem;
+    }
 }
 .header__cart-open {
     display: block;
