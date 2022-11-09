@@ -20,6 +20,26 @@ function closeModal() {
     aside.classList.remove('toggle')
 }
 
+async function sort() {
+    const aside = document.querySelector('.aside')
+    const products = await getProducts()
+
+    const sort = products.sort((a,b) => {
+        if(a.name < b.name) {
+            return -1
+        } else if(a.name > b.name) {
+            return 1
+        } else {
+            return 0
+        }
+    })
+
+    aside.classList.remove('toggle')
+    setTimeout(() => {
+        createMainHTML(sort)
+    }, 500);
+}
+
 function createCartHTML() {
     const cartModal = document.querySelector('.header__cart-modal')
 

@@ -186,6 +186,8 @@ ul {
     margin-bottom: 0;
 }
 .aside {
+    display: flex;
+    flex-direction: column;
     position: absolute;
     right: 100rem;
     transition-property: right;
@@ -335,4 +337,7 @@ label {
 .form-cart__select {
     padding: 1rem 0;
     border: none;
+}
+.sort {
+    margin-bottom: 1rem;
 }
