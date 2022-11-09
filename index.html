@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda Virtual BSale</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./src/styles/normalize.css">
+    <link rel="stylesheet" href="./src/styles/app.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container header__flex">
+            <img src="./src/img/menu.svg" alt="menu image" class="header__menu" onclick="toggleMenu()">
+            <a href="index.html"><img src="./src/img/logo.png" alt="logo" class="header__logo"></a>
+            <img src="./src/img/shopping-cart.svg" alt="shopping cart image" class="header__cart">
+        </div>
+    </header>
+    <section class="content">
+        <aside class="aside">
+            <form id="form" class="form">
+                <div class="form__content">
+                    <label for="text">Buscar: </label>
+                    <input class="form__field" type="text" id="text">
+                </div>
+                <div class="form__content">
+                    <label for="text">Categoría: </label>
+                    <select class="form__field" id="select-form"></select>
+                </div>
+                <input class="submit-query" type="submit" value="Buscar" onclick="closeModal()" id="submit"/>
+            </form>
+        </aside>
+        <main class="main">
+        </main>
+    </section>
+    <script src="src/js/app.js"></script>
+</body>
+</html>
