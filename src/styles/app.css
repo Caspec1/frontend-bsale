@@ -12,8 +12,19 @@ html {
 }
 
 .container {
-    max-width: 120rem;
+    max-width: 60rem;
     margin: 0 auto;
+}
+@media (min-width: 480) { 
+    .container {
+        max-width: 90rem;
+    }
+}
+
+@media (min-width: 992px) { 
+    .container {
+        max-width: 120rem;
+    }
 }
 
 .header {
@@ -21,6 +32,7 @@ html {
     height: 10rem;
     background-size: cover;
     background-position: center center;
+    position: relative;
 }
 @media (min-width: 768px) { 
     .header {
@@ -57,6 +69,68 @@ html {
     .header__menu {
         display: none;
     }
+}
+.header__cart:hover {
+    cursor: pointer;
+}
+.header__cart-modal {
+    display: block;
+    position: absolute;
+    width: 45rem;
+    background-color: #fff;
+    right: 10rem;
+    top: 15rem;
+    z-index: 999999;
+}
+.header__cart-open {
+    display: block;
+}
+.header__cart-hide {
+    display: none;
+}
+.header__cart-pay {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 900;
+}
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.table__head {
+    background-color: rgb(2 132 199);
+    border: 1px solid #000;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    color: #fff;
+    text-align: center;
+}
+.table__body {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+.table__head-title {
+    padding: 1rem 1.5rem 1rem 0;
+}
+.header__cart-image {
+    width: 10rem;
+}
+.header__cart-remove {
+    all: unset;
+    width: 2rem;
+    height: 2rem;
+    color: #fff;
+    font-weight: 900;
+    background-color: rgb(249 115 22);
+    padding: .5rem;
+    border-radius: 50%;
+    transition-property: background-color;
+    transition-duration: .3s;
+}
+.header__cart-remove:hover {
+    cursor: pointer;
+    background-color: rgb(234 88 12);
 }
 .content {
     max-width: 100%;

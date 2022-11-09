@@ -1,5 +1,4 @@
-let cart = []
-console.log(cart)
+let cart = JSON.parse(localStorage.getItem('cart')) ?? []
 
 window.onload = async () => {
     const [category, products] = await Promise.all([
@@ -21,19 +20,127 @@ function closeModal() {
     aside.classList.remove('toggle')
 }
 
-async function getCategory() {
-    const url = 'http://localhost:3000/api/category'
-    const res = await fetch(url)
-    products = await res.json()
-    return products
+function createCartHTML() {
+    const cartModal = document.querySelector('.header__cart-modal')
+
+    if(cartModal.classList.contains('header__cart-open')) {
+        const html = `
+        <table class="table">
+            <thead class="table__head">
+                <tr>
+                    <th class="table__head-title">Imagen</th>
+                    <th class="table__head-title">Nombre</th>
+                    <th class="table__head-title">Precio</th>
+                    <th class="table__head-title">Cantidad</th>
+                    <th class="table__head-title">Eliminar</th>
+                </tr>
+            <thead>
+            <tbody class="table__body">
+                ${cart.map(prod => {
+
+                    const {id, name, image, price, discount, quantity, newPrice} = prod
+
+                    const options = [...Array(20).keys()]
+                            
+                    return (
+                        `   
+                        <tr>
+                            <td><img src=${image} alt=${`imagen ${name}`} class="header__cart-image"/></td>
+                            <td><p class="header__cart-product">${name}</p></td>
+                            <td><p class="header__cart-price">${discount !== '' ? `$${parseInt(newPrice) * parseInt(quantity)}` : `$${parseInt(price) * parseInt(quantity)}`}</p></td>
+                            <td>
+                                <select list=${id} id="quantity-select" onchange="updateQuantity(this)">
+                                    ${options.map(o => `<option value=${o}>${o}</option>`)}
+                                </select>
+                            </td>
+                            <td><button type="button" value=${id} onclick="removeProduct(value)" class="header__cart-remove">X</button></td>
+                        </tr>
+                        `
+                    )
+                }).join('')}
+            </tbody>
+        </table>
+
+        <p class="header__cart-pay">Total a pagar: $${cart.reduce((total, prod) => total + (parseInt(prod.discount !== '' ? prod.newPrice : prod.price) * parseInt(prod.quantity)), 0)}</p>
+    `
+    cartModal.innerHTML = html
+    }
 }
 
-async function getProducts() {
-    const url = 'http://localhost:3000/api/products'
-    const res = await fetch(url)
-    const result = await res.json()
+function toggleCart() {
+    const cartModal = document.querySelector('.header__cart-modal')
+    cartModal.classList.toggle('header__cart-open')
+    cartModal.classList.toggle('header__cart-hide')
 
-    return result
+    createCartHTML()
+}
+
+const addCart = (prod) => {
+    const id = prod.getAttribute('value')
+    const name = prod.getAttribute('name')
+    const image = prod.getAttribute('url')
+    const price = prod.getAttribute('price')
+    const discount = prod.getAttribute('discount')
+    const newPrice = prod.getAttribute('new-price')
+
+    const product = {
+        id,
+        name,
+        image,
+        price,
+        discount,
+        newPrice,
+        quantity: "1"
+    }
+    verification(product)
+
+}
+
+function verification(prod) {
+    const p = prod
+    const {id} = prod
+    if(cart.length === 0) {
+        cart = [...cart, prod]
+    } else {
+        if(cart.some(prod => prod.id === id)) {
+            cart = cart
+        } else {
+            cart = [...cart, p]
+        }
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart))
+
+    createCartHTML()
+
+}
+
+function updateQuantity(prod) {
+
+    const select = document.querySelector('#quantity-select').value
+    const id = prod.getAttribute('list')
+
+    if(cart.some(prod => prod.id === id)) {
+        const newQuantity = cart.map(prod => {
+            if(prod.id === id) {
+                prod.quantity = select
+            }
+            return prod
+        })
+        cart = newQuantity
+        localStorage.setItem('cart', JSON.stringify(cart))
+        createCartHTML()
+    } 
+}
+
+function removeProduct(value) {
+    const removeProduct = cart.filter(prod => prod.id !== value)
+
+    cart = removeProduct
+
+    localStorage.setItem('cart', JSON.stringify(cart))
+
+    createCartHTML()
 }
 
 form.addEventListener('submit', async function(e) {
@@ -71,26 +178,6 @@ function createAsideHTML(category) {
     aside.innerHTML = html
 }
 
-const addCart = (prod) => {
-    const id = prod.getAttribute('value')
-    const name = prod.getAttribute('name')
-    const image = prod.getAttribute('url')
-    const price = prod.getAttribute('price')
-    const discount = prod.getAttribute('discount')
-    const newPrice = prod.getAttribute('new-price')
-
-    const product = {
-        id,
-        name,
-        image,
-        price,
-        discount,
-        newPrice
-    }
-
-    return cart = [...cart, product]
-}
-
 function createMainHTML(products) {
 
     const main = document.querySelector('main')
@@ -121,4 +208,18 @@ function createMainHTML(products) {
     `
 
     main.innerHTML = html
+}
+async function getCategory() {
+    const url = 'http://localhost:3000/api/category'
+    const res = await fetch(url)
+    products = await res.json()
+    return products
+}
+
+async function getProducts() {
+    const url = 'http://localhost:3000/api/products'
+    const res = await fetch(url)
+    const result = await res.json()
+
+    return result
 }
