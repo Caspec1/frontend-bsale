@@ -327,7 +327,27 @@ label {
     transform: scale(1.1);
     cursor: pointer;
 }
-
+.button-pag {
+    padding: 10px;
+    border: none;
+    background-color: rgb(2 132 199);
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    border-radius: 1rem;
+    color: #fff;
+    font-weight: 900;
+    transition-property: background-color transform;
+    transition-duration: .3s;
+    text-decoration: none;
+}
+.button-pag:hover {
+    background-color: rgb(7 89 133);
+    transform: scale(1.1);
+    cursor: pointer;
+}
+.active {
+    background-color: rgb(7 89 133);
+}
 .form-cart {
     display: flex;
     align-items: center;
@@ -340,4 +360,11 @@ label {
 }
 .sort {
     margin-bottom: 1rem;
+}
+.pag {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 3rem;
 }

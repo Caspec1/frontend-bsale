@@ -1,4 +1,10 @@
 let cart = JSON.parse(localStorage.getItem('cart')) ?? []
+const pag = document.querySelector('#pag')
+
+const itemsPag = 20
+let totalPag
+let iterator
+let actualPag = 1
 
 window.onload = async () => {
     const [category, products] = await Promise.all([
@@ -166,7 +172,7 @@ form.addEventListener('submit', async function(e) {
     
     const data = {category: select, search: text}
 
-    const url = 'http://localhost:3000/api/products'
+    const url = 'http://localhost:3000/api/products/all'
 
     const response = await fetch(url, {
         method: 'POST',
@@ -177,6 +183,7 @@ form.addEventListener('submit', async function(e) {
     })
 
     const result = await response.json();
+    totalPag = calculatePag(result.length)
 
     createMainHTML(result)
 })
@@ -223,6 +230,46 @@ function createMainHTML(products) {
     `
 
     main.innerHTML = html
+
+    while(pag.firstChild) {
+        pag.removeChild(pag.firstChild)
+    }
+    if(totalPag > 2) {
+        printPag()
+    }
+
+}
+function calculatePag(total) {
+    return parseInt(Math.ceil(total / itemsPag))
+}
+function *createPag(total) {
+    for(let i = 1; i <= total; i++) {
+        yield i
+    }
+}
+function printPag() {
+    iterator = createPag(totalPag)
+
+    while(true) {
+        const {value, done} = iterator.next()
+        if (done) return
+
+        const btn = document.createElement('a')
+        btn.href = '#'
+        btn.dataset.pag = value
+        btn.textContent = value
+        btn.classList.add('button-pag')
+
+        btn.onclick = async () => {
+            actualPag = value
+
+            const products = await getProducts()
+            createMainHTML(products)
+        }
+
+        pag.appendChild(btn)
+    }
+
 }
 async function getCategory() {
     const url = 'http://localhost:3000/api/category'
@@ -232,9 +279,9 @@ async function getCategory() {
 }
 
 async function getProducts() {
-    const url = 'http://localhost:3000/api/products'
+    const url = `http://localhost:3000/api/products/${actualPag}/${itemsPag}`
     const res = await fetch(url)
     const result = await res.json()
-
-    return result
+    totalPag = calculatePag(result.totalData)
+    return result.result
 }
