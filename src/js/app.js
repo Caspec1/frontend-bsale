@@ -2,6 +2,7 @@ import { createCartHTML, createCategory } from './createHTML.js'
 import { getCategory, getProducts } from './getData.js'
 import { createMainHTML } from './createHTML.js'
 import { menu, shopping } from './const.js'
+import { cart, createCartSize } from './cartFunctions.js'
 
 
 window.onload = async () => {
@@ -12,6 +13,7 @@ window.onload = async () => {
 
     createCategory(category)
     createMainHTML(products.result)
+    createCartSize(cart)
 }
 
 menu.addEventListener('click', () => {

@@ -1,7 +1,19 @@
 import { createCartHTML } from './createHTML.js'
+import { cartSize } from './const.js'
 
 export let cart = JSON.parse(localStorage.getItem('cart')) ?? []
 
+export function createCartSize(cart) {
+
+    while(cartSize.firstChild) {
+        cartSize.removeChild(cartSize.firstChild)
+    }
+
+    const size = document.createElement('p')
+    size.textContent = cart.length
+    size.classList.add('size')
+    cartSize.appendChild(size)
+}
 
 export const addCart = (prod) => {
     verification(prod)
@@ -21,6 +33,8 @@ function verification(prod) {
     }
 
     localStorage.setItem('cart', JSON.stringify(cart))
+
+    createCartSize(cart)
 
     createCartHTML()
 }
@@ -44,6 +58,8 @@ export function removeProduct(value) {
     cart = removeProduct
 
     localStorage.setItem('cart', JSON.stringify(cart))
+
+    createCartSize(cart)
 
     createCartHTML()
 }

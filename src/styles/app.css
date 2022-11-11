@@ -70,6 +70,33 @@ html {
         display: none;
     }
 }
+.cart-size {
+    position: absolute;
+    top: 2rem;
+    right: 1rem;
+}
+@media (min-width: 768px) { 
+    .cart-size {
+        top: 7rem;
+        right: 9rem;
+    }
+}
+@media (min-width: 992px) { 
+    .cart-size {
+        top: 7rem;
+        right: 9rem;
+    }
+}
+.size {
+    all: unset;
+    font-size: 2rem;
+    color: #fff;
+    background-color: rgb(249 115 22);
+    width: 3rem;
+    height: 4rem;
+    padding: .3rem 1rem;
+    border-radius: 50%;
+}
 .header__cart:hover {
     cursor: pointer;
 }
