@@ -7,21 +7,21 @@ export let actualPag = 1
 export let totalPag
 
 export async function getCategory() {
-    const url = 'http://localhost:3000/api/category'
+    const url = 'https://backend-bsale-production.up.railway.app/api/category'
     const res = await fetch(url)
     products = await res.json()
     return products
 }
 
 export async function getProducts() {
-    const url = `http://localhost:3000/api/products/${actualPag}/${itemsPag}`
+    const url = `https://backend-bsale-production.up.railway.app/api/products/${actualPag}/${itemsPag}`
     const res = await fetch(url)
     const result = await res.json()
     totalPag = calculatePag(result.totalData)
     return {result: result.result, totalPag}
 }
 export async function getProductsByCategory(value) {
-    const url = `http://localhost:3000/api/products/${actualPag}/${itemsPag}`
+    const url = `https://backend-bsale-production.up.railway.app/api/products/${actualPag}/${itemsPag}`
     const data = {id: value}
     const response = await fetch(url, {
             method: 'POST',
@@ -74,7 +74,7 @@ form.addEventListener('submit', async function(e) {
 
     try {
         const data = {search: text}
-        const url = 'http://localhost:3000/api/products/all'
+        const url = 'https://backend-bsale-production.up.railway.app/api/products/all'
 
         const response = await fetch(url, {
             method: 'POST',
