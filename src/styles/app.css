@@ -321,6 +321,7 @@ label {
     font-weight: 900;
     transition-property: background-color transform;
     transition-duration: .3s;
+    margin-bottom: 1rem;
 }
 .submit-query:hover {
     background-color: rgb(7 89 133);
@@ -378,4 +379,24 @@ label {
     .error {
         grid-column: 2 / 4;
     }
+}
+.form__category {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+.btn-category {
+    border: none;
+    background-color: rgb(2 132 199);
+    padding: 1rem 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    transition-property: background-color;
+    transition-duration: .3s;
+}
+.btn-category:hover {
+    cursor: pointer;
+    background-color: rgb(7 89 133);
 }

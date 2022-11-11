@@ -20,7 +20,21 @@ export async function getProducts() {
     totalPag = calculatePag(result.totalData)
     return {result: result.result, totalPag}
 }
+export async function getProductsByCategory(value) {
+    const url = `http://localhost:3000/api/products/${actualPag}/${itemsPag}`
+    const data = {id: value}
+    const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+    const result = await response.json()
+    totalPag = calculatePag(result.totalData)
 
+    return {result: result.result, totalPag}
+}
 
 export function calculatePag(total) {
     return parseInt(Math.ceil(total / itemsPag))
@@ -56,13 +70,10 @@ export function printPag() {
 }
 form.addEventListener('submit', async function(e) {
     e.preventDefault()
-
-    const select = parseInt(document.querySelector('#select-form').value)
     const text = document.querySelector('#text').value
-    
 
     try {
-        const data = {category: select, search: text}
+        const data = {search: text}
         const url = 'http://localhost:3000/api/products/all'
 
         const response = await fetch(url, {

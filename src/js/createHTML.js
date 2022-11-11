@@ -1,6 +1,7 @@
 import { cart, addCart, updateQuantity, removeProduct } from "./cartFunctions.js"
-import { printPag } from './getData.js'
-import { totalPag } from './getData.js'
+import { getProductsByCategory, printPag, totalPag } from './getData.js'
+import { catDiv } from "./const.js"
+
 
 export function createCartHTML(value = 1) {
     const cartModal = document.querySelector('.header__cart-modal')
@@ -124,31 +125,38 @@ export function createMainHTML(products) {
         while(pag.firstChild) {
             pag.removeChild(pag.firstChild)
         }
-        if(totalPag > 2) {
-            printPag()
-        }
+        printPag()
     } else {
         main.innerHTML = error
         while(pag.firstChild) {
             pag.removeChild(pag.firstChild)
         }
-        if(totalPag > 2) {
-            printPag()
-        }
+        printPag()
     }
 
     
 
 }
 
-export function createAsideHTML(category) {
+export function createCategory(category) {
+    category.map(cat => {
+        const btn = document.createElement('button')
+        btn.type = 'button'
+        btn.textContent = cat.name
+        btn.value = cat.id
+        btn.id = 'btn-category'
+        btn.classList.add('btn-category')
 
-    const aside = document.querySelector('#select-form')
+        catDiv.appendChild(btn)
+    })
 
-    const html = `
-        <option value="0">Todas</option>
-        ${category.map(cat => `<option value=${cat.id} name="category">${cat.name}</option>`)}
-    `
+    const buttons = document.querySelectorAll('#btn-category')
 
-    aside.innerHTML = html
+    buttons.forEach(cat => {
+        cat.addEventListener('click', async (e) => {
+            const products = await getProductsByCategory(e.target.value)
+
+            createMainHTML(products.result)
+        })
+    })
 }

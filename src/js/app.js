@@ -1,6 +1,6 @@
-import { createCartHTML } from './createHTML.js'
+import { createCartHTML, createCategory } from './createHTML.js'
 import { getCategory, getProducts } from './getData.js'
-import { createMainHTML, createAsideHTML } from './createHTML.js'
+import { createMainHTML } from './createHTML.js'
 import { menu, shopping } from './const.js'
 
 
@@ -10,7 +10,7 @@ window.onload = async () => {
         getProducts()
     ])
 
-    createAsideHTML(category)
+    createCategory(category)
     createMainHTML(products.result)
 }
 
