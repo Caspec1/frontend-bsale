@@ -1,4 +1,4 @@
-import { cart, addCart, updateQuantity, removeProduct } from "./cartFunctions.js"
+import { cart, addCart, removeProduct, updateQuantity } from "./cartFunctions.js"
 import { getProductsByCategory, printPag, totalPag } from './getData.js'
 import { catDiv } from "./const.js"
 
@@ -22,8 +22,8 @@ export function createCartHTML(value = 1) {
                 ${cart.map(prod => {
 
                     const {id, name, image, price, discount, quantity, newPrice} = prod
-
                     const options = [...Array(21).keys()]
+                    const newOptions = options.slice(1)
                             
                     return (
                         `   
@@ -32,8 +32,9 @@ export function createCartHTML(value = 1) {
                             <td><p class="header__cart-product">${name}</p></td>
                             <td><p class="header__cart-price">${discount !== '' ? `$${parseInt(newPrice) * parseInt(quantity)}` : `$${parseInt(price) * parseInt(quantity)}`}</p></td>
                             <td>
-                                <select id="select-quantity">
-                                    ${options.map(option => `<option data-id=${id} value=${option}>${option}</option>`).join('')}
+                                <select id="update-quantity" value=${quantity} data-id=${id}>
+                                    <option value=${quantity}>${quantity}</option>
+                                    ${newOptions.map(o => `<option value=${o}>${o}</option>`)}
                                 </select>
                             </td>
                             <td><button id="btn-delete" type="button" value=${id} class="header__cart-remove">X</button></td>
@@ -49,14 +50,11 @@ export function createCartHTML(value = 1) {
 
     cartModal.innerHTML = html
 
-    const newQuantity = document.querySelectorAll('#select-quantity')
-
-    newQuantity.forEach(prod => {
-
-        prod.addEventListener('change', (e) => {
-            const id = e.target[0].dataset.id
+    const select = document.querySelectorAll('#update-quantity')
+    select.forEach(s => {
+        s.addEventListener('change', (e) => {
             const value = e.target.value
-
+            const id = e.target.dataset.id
             updateQuantity(value, id)
         })
     })
@@ -80,6 +78,9 @@ export function createMainHTML(products) {
         ${products.map(prod => {
             const {id, name, price, discount, url_image} = prod
             const newPrice = price - discount
+
+            const options = [...Array(21).keys()]
+            const newOptions = options.slice(1)
             return (
                 `
                 <div class="card">
@@ -90,7 +91,12 @@ export function createMainHTML(products) {
                             <p class=${discount !== 0 ? 'card__discount' : 'card__price'}>$ ${price}</p>
                             <p class='card__price'>${discount !== 0 ? `$ ${newPrice}` : ''}</p>
                         </div>
-                        <button type="button" class='card__add-cart' data-id=${id} id="button-cart" value=${id} data-price=${price} data-name=${name} data-url=${url_image} data-discount=${discount} data-new=${newPrice}>Agregar al carrito</button>
+                        <form id="form-quantity" class="form-quantity">
+                            <select id="select-quantity" class="select-quantity">
+                                ${newOptions.map(o => `<option value=${o}>${o}</option>`)}
+                            </select>
+                            <button type="submit" class='card__add-cart' data-id=${id} id="button-cart" value=${id} data-price=${price} data-name=${name} data-url=${url_image} data-discount=${discount} data-new=${newPrice}><img class="add-cart" src="https://www.svgrepo.com/show/52866/cart.svg"/></button>
+                        </form>
                     </div>
                 </div>
             `
@@ -103,21 +109,21 @@ export function createMainHTML(products) {
     if(products.length > 0) {
         main.innerHTML = html
 
-        const add = document.querySelectorAll(`[data-id]`)
-    
-        add.forEach(prod => {
-    
-            prod.addEventListener('click', (e) => {
-        
+        const form = document.querySelectorAll('#form-quantity')
+
+        form.forEach((form) => {
+            form.addEventListener('submit', e => {
+                e.preventDefault()
+                const value = e.target[0].value
                 const product = {
-                    id: e.target.dataset.id,
-                    name: e.target.dataset.name,
-                    image: e.target.dataset.url,
-                    price: e.target.dataset.price,
-                    discount: e.target.dataset.discount,
-                    newPrice: e.target.dataset.new,
-                    quantity: "1"
-            }
+                    id: e.target[1].dataset.id,
+                    name: e.target[1].dataset.name,
+                    image: e.target[1].dataset.url,
+                    price: e.target[1].dataset.price,
+                    discount: e.target[1].dataset.discount,
+                    newPrice: e.target[1].dataset.new,
+                    quantity: value
+                }
                 addCart(product)
             })
         })
