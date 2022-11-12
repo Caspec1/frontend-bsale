@@ -1,6 +1,6 @@
 import { cart, addCart, removeProduct, updateQuantity } from "./cartFunctions.js"
 import { getProductsByCategory, printPag, totalPag } from './getData.js'
-import { catDiv } from "./const.js"
+import { catDiv, aside } from "./const.js"
 
 
 export function createCartHTML(value = 1) {
@@ -163,6 +163,8 @@ export function createCategory(category) {
             const products = await getProductsByCategory(e.target.value)
 
             createMainHTML(products.result)
+
+            aside.classList.remove('toggle')
         })
     })
 }
