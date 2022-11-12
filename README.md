@@ -6,7 +6,7 @@ Dentro del src del proyecto y dentro de la carpeta js se encuentran 5 archivos j
 
 En el archivo app se encuentran las peticiones al momento de cargar el documento, las cuales son los productos y las categorías, además del estado del tamaño del carrito de compras y se registran también los event listeners que tanto para la barra de menu en la versión mobile y para abrir el carrito.
 
-En el archivo cartFunctions se encuentran todas las funcionalidades del carrito, las cuales contemplan un CRUD dentro de la inserción que se realiza en el html.
+En el archivo cartFunctions se encuentran todas las funcionalidades del carrito, las cuales contemplan un CRUD dentro de la inserción que se realiza en el html. Además de esto, todas las operaciones son almacenadas en el localStorage del navegador para no perder la información al recargar la página
 
 En el archivo const se encuentran todas las constantes que se utilizan en el proyecto, en este caso son los lugares donde se realizará la inyección del html a través de virtual DOM.
 
